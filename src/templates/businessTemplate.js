@@ -30,6 +30,23 @@ const BusinessHeader = styled.div`
   a:hover {
     color: var(--primary-dark);
   }
+  a.button {
+    border: 2px solid var(--secondary);
+    padding: 0.5rem 2.5rem;
+    border-radius: 2rem;
+    margin-right: 1.5rem;
+    text-decoration: none;
+    transition: background 200ms linear;
+  }
+  a.button:hover {
+    background: var(--secondary);
+    color: var(--white);
+    text-decoration: underline;
+  }
+  a.button:focus {
+    text-decoration: underline;
+    color: var(--secondary);
+  }
 `
 
 const BusinessDetails = styled.div`
@@ -65,42 +82,23 @@ export default function EventTemplate({data}) {
           <BusinessHeader>
             <StyledHeading>{dataItem.businessName}</StyledHeading>    
             
-            {dataItem.address ? 
+            {dataItem.county ? 
+              <Fragment><br></br>{dataItem.postcode ? 
+                <Fragment><br></br>{dataItem.postcode}, </Fragment>: ""}<Link to={`/businesses/${_.kebabCase(dataItem.county)}`} >{dataItem.county}</Link></Fragment>
+            : ""}
+
             
+            {dataItem.emailAddress ? 
               <Fragment>
-                {dataItem.address}, <Link to={`/businesses/${_.kebabCase(dataItem.county)}`} >County {dataItem.county}</Link>
-              </Fragment> 
-              : 
-              <Fragment>
-                <br></br>
-                <Link to={`/businesses/${_.kebabCase(dataItem.county)}`} >{dataItem.county}</Link>
-              </Fragment>  
-            }
+                <br></br><a href={`mailto:${dataItem.emailAddress}`} className={`button`}>Email Us</a>
+              </Fragment>
+            : ""}
             
-            <Fragment><br></br>{dataItem.postcode}</Fragment>
-            
-            {dataItem.phoneNumber ? 
-              <Fragment>
-                <br></br>Phone: <a href={`tel:${dataItem.phoneNumber}`}>{dataItem.phoneNumber}</a>
-              </Fragment> 
-              : ""
-            }
-            
-            {dataItem.emailAddress || dataItem.website ? 
-              dataItem.emailAddress && dataItem.website ? 
-                <Fragment>
-                  <br></br><a href={`mailto:${dataItem.emailAddress}`}>Email Us</a> | <a href={dataItem.website}>Visit Our Website</a>
-                </Fragment>
-                : dataItem.emailAddress && !(dataItem.website) ? 
-                  <Fragment>
-                    <br></br><a href={`mailto:${dataItem.emailAddress}`}>Email Us</a>
-                  </Fragment> 
-                  :
-                  <Fragment>
-                    <br></br><a href={dataItem.website}>Visit Our Website</a>
-                  </Fragment>
-              : ""
-            }
+            {dataItem.website ? 
+              <Fragment>    
+                <a href={dataItem.website} className={`button`}>Visit Our Website</a>
+              </Fragment>
+            : ""}
           </BusinessHeader>
         </Container>
         
